@@ -1,18 +1,22 @@
+// models/index.js
+
 const { Sequelize } = require('sequelize');
 const dbConfig = require('../db.config');
 
-// Uncomment this block to use Mysql, don't forget to adapt db.config.js
-/*const instance = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
-        host: dbConfig.hostname,
-        port: dbConfig.port,
-        dialect: "mysql"
-});*/
+// Utilisez cette instance pour MySQL
+const instance = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    host: dbConfig.hostname,
+    port: dbConfig.port,
+    dialect: dbConfig.dialect
+});
 
-// Uncomment this block to use Sqlite, don't forget to adapt db.config.js
+// Assurez-vous que cette section est commentée ou supprimée
+/*
 const instance = new Sequelize({
     dialect: dbConfig.dialect,
     storage: dbConfig.storage
 });
+*/
 
 module.exports = {
     instance,

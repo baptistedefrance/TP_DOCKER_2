@@ -14,3 +14,5 @@ docker run -d --name ma-base-de-donnees --network mon-reseau-db \
 -e MYSQL_USER=test \
 -e MYSQL_PASSWORD=test \
 mysql:latest
+
+docker run -d --name mon-application-node --network mon-reseau-db -p 3000:3000 mon-application-node
