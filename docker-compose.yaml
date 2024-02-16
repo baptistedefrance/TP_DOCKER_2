@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mon-application-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mon-application-node
+    depends_on:
+      ma-base-de-donnees:
+        condition: service_healthy
+    networks:
+      - mon-reseau-db
+    ports:
+      - "3000:3000"
+    command: sh -c 'while ! docker exec ma-base-de-donnees mysqladmin ping -h"ma-base-de-donnees" -u"test" -p"test" --silent; do sleep 1; done && node server.js' # Attendre MySQL avant de démarrer l'application
+
+  ma-base-de-donnees:
+    image: mysql:latest
+    container_name: ma-base-de-donnees
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "test", "-ptest"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    networks:
+      - mon-reseau-db
+
+networks:
+  mon-reseau-db:
+    driver: bridge
